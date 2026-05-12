@@ -1,6 +1,8 @@
-# TikTok Climate Change Marketing Analytics
+# TikTok Semantic
 
-This repo turns the UNSW Marketing Analytics Hackathon TikTok dataset into reusable analysis tables for answering:
+Semantic marketing analytics for climate-action TikToks.
+
+This repo turns the UNSW Marketing Analytics Hackathon TikTok dataset into reusable analysis tables and insight briefs for answering:
 
 > How can marketing analytics help uncover insights to more effectively promote climate actions on TikTok?
 
@@ -13,6 +15,7 @@ The starter pipeline is based on the supplied notebook and keeps the useful piec
 - `scripts/build_dataset.py` builds parquet core tables and CSV insight tables.
 - `src/tiktok_semantic/` contains reusable loaders, normalizers, feature builders, summary parsers, and insight helpers.
 - `notebooks/01_competition_analysis.ipynb` is the refined competition notebook for insight generation.
+- `docs/competition_insights.md` summarizes the current evidence and recommended competition storyline.
 - `data/` and `reports/` are git-ignored so large media, pickles, and outputs stay local.
 
 ## Quick Start
@@ -49,6 +52,10 @@ The build script creates a lightweight semantic layer from Gemini's multimodal `
 - `posts_enriched.parquet`: post metrics joined to the semantic labels.
 - `theme_performance.csv`: performance by theme, action frame, and mood.
 - `messaging_recommendations.csv`: ranked message/content combinations using reach, engagement efficiency, and shares.
+- `comment_intent_summary.csv`: lightweight audience response categories from captured comments.
+- `post_comment_intents.csv`: post-level comment response metrics, including early-comment counts.
+- `creator_leverage.csv`: creator history and reach-over-follower indicators for activation planning.
+- `region_performance.csv`: descriptive regional performance summary.
 
 These tables are designed to support claims about how climate-action TikToks should be framed, not just which posts were popular.
 

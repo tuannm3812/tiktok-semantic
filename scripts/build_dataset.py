@@ -8,9 +8,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from tiktok_semantic.features import build_core_tables
 from tiktok_semantic.insights import (
+    comment_intent_tables,
     content_type_performance,
+    creator_leverage,
     hashtag_performance,
     messaging_recommendations,
+    region_performance,
     theme_performance,
     top_posts,
 )
@@ -47,8 +50,15 @@ def main() -> None:
     min_views = cfg.get("engagement", {}).get("min_views_for_efficiency_rank", 1000)
     insight_tables = {}
     insight_tables.update(top_posts(tables["post_metrics"], min_views=min_views))
+    insight_tables["region_performance"] = region_performance(tables["post_metrics"])
     insight_tables["hashtag_performance"] = hashtag_performance(
         tables["post_metrics"], tables["posts_hashtags"]
+    )
+    insight_tables.update(comment_intent_tables(tables["posts_comments"], tables["post_metrics"]))
+    insight_tables["creator_leverage"] = creator_leverage(
+        tables["posts_author"],
+        tables["authors"],
+        tables["authorpost_metrics"],
     )
     if not summaries.empty:
         insight_tables["content_type_performance"] = content_type_performance(
