@@ -60,10 +60,36 @@ Marketing implication: prioritize creators by historical views per follower, not
 
 Marketing implication: use broad climate tags for discoverability, but attach a context tag that tells TikTok and viewers what kind of climate story the post is: lifestyle, transport, policy, extreme weather, or pop-culture analogy.
 
-## Recommended Deep-Dive Extensions
+## Deep-Dive Extension Status
 
-1. Run the pipeline on the full 1,597-post dataset, then rerank the same tables.
-2. Add sentence-transformer clustering on `semantic_text` to discover organic narrative clusters beyond rule-based labels.
-3. Add comment sentiment and emotion to separate supportive comments from anxiety, confusion, and backlash.
-4. Build creator network features from followers/followings to find bridge creators across climate, lifestyle, politics, and entertainment audiences.
-5. Convert top post patterns into a creative playbook: hook type, narrative frame, call to action, visual format, hashtag bundle, and comment follow-up.
+1. Full 1,597-post run: not completed in this repo yet because the available local/Drive data only contains the 10-post `Data_Sample`. The pipeline is ready for the full dataset once the full `dtaPosts.pkl` and `Videos/` folder are placed under `data/raw`.
+2. Semantic clustering: completed as a dependency-light TF-IDF/KMeans version in `scripts/deep_dive_nlp.py`. On the current sample it finds two narrative clusters:
+   - Video-led Earth/politics/interview cluster: 5 posts, 4.43M total views, 889.6K median views.
+   - Image/audio climate explainer cluster: 5 posts, 998K total views, 1.0K median views.
+3. Comment sentiment and emotion: completed as a transparent lexicon/rule-based version in `scripts/deep_dive_nlp.py`. Current comment outputs show that general neutral reaction dominates, but confusion and practical questions are the largest actionable second layer.
+4. Creator network features: completed for the available sample through `creator_bridge_metrics.csv`, which uses captured follower/following edges to estimate degree, betweenness, component size, and a blended bridge score.
+5. Creative playbook: partly complete through `messaging_recommendations.csv` and this insight brief. The next version should turn top patterns into slide-ready campaign templates.
+
+## Additional NLP Findings
+
+The semantic clustering reinforces the format finding. The higher-reach cluster is video-led and built around dramatic Earth, politics, and interview-style narratives. The lower-reach cluster contains image/audio explainers, including car-free transit and extreme-weather education. This does not mean explainers are weak; it suggests they may need stronger hooks or creator distribution to travel as far as video-led climate narratives.
+
+Comment sentiment and emotion show a conversion opportunity. The largest category is neutral/general reaction, but `confusion` appears frequently and information questions receive high average likes. That means educational follow-up content can be designed directly from comments: answer "what should I do?", "does this action help?", and "how can I participate if my choices are constrained?"
+
+## Additional Sample Insights
+
+The sample supports four campaign hypotheses worth testing on the full dataset:
+
+1. **Action beats awareness when the goal is efficient engagement.** The highest engagement-efficiency post is a practical eco-lifestyle carousel, not the highest-reach video. This points to a two-stage funnel: use high-emotion video to earn reach, then use practical formats to convert attention into action.
+2. **Questions are high-value comments.** Explicit information questions are fewer than general reactions, but they attract high average comment likes. That suggests question-answer follow-up videos could perform well because they respond to visible audience demand.
+3. **Bridge creators are not always the biggest creators.** The bridge score surfaces creators with strong network position and/or captured follower/following reach. This is a better activation shortlist than follower count alone because climate communication often needs to cross from climate-native audiences into lifestyle, politics, transport, and entertainment spaces.
+4. **Broad climate hashtags need narrative context.** `#climatechange` supplies discoverability, but the stronger strategic signal comes from paired context tags such as public transport, eco-lifestyle, interviews, policy, extreme weather, or pop-culture references.
+
+Recommended presentation framing: **Reach comes from hooks, persuasion comes from frames, and conversion opportunities come from comments.**
+
+## Next Analysis Moves
+
+1. Add the full 1,597-post dataset to `data/raw`, then rerun `python scripts/build_dataset.py --config configs/sample.yaml` and `python scripts/deep_dive_nlp.py --config configs/sample.yaml`.
+2. Install optional NLP dependencies and rerun clustering with sentence-transformer embeddings when scale justifies it.
+3. Replace lexicon sentiment with transformer sentiment/emotion for final presentation robustness.
+4. Expand follower/following graph features on the full dataset to identify bridge creators across climate, lifestyle, politics, entertainment, and transport audiences with more stable network centrality estimates.

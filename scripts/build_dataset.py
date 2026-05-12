@@ -10,6 +10,7 @@ from tiktok_semantic.features import build_core_tables
 from tiktok_semantic.insights import (
     comment_intent_tables,
     content_type_performance,
+    creator_bridge_metrics,
     creator_leverage,
     hashtag_performance,
     messaging_recommendations,
@@ -59,6 +60,13 @@ def main() -> None:
         tables["posts_author"],
         tables["authors"],
         tables["authorpost_metrics"],
+    )
+    insight_tables["creator_bridge_metrics"] = creator_bridge_metrics(
+        tables["posts_author"],
+        tables["authors"],
+        tables["authorfollowers"],
+        tables["authorfollowings"],
+        tables["post_metrics"],
     )
     if not summaries.empty:
         insight_tables["content_type_performance"] = content_type_performance(
