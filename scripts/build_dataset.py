@@ -1,3 +1,5 @@
+"""Build normalized core tables and competition-oriented analytics outputs."""
+
 from __future__ import annotations
 
 import argparse
@@ -6,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from tiktok_semantic.features import build_core_tables
+from tiktok_semantic.features import build_core_tables  # noqa: E402
 from tiktok_semantic.insights import (
     comment_intent_tables,
     content_type_performance,
@@ -18,12 +20,23 @@ from tiktok_semantic.insights import (
     theme_performance,
     top_posts,
 )
-from tiktok_semantic.io import load_raw_pickles, read_config, resolve_data_root, write_manifest, write_table
-from tiktok_semantic.summaries import enrich_posts_with_summaries, read_video_summaries
+from tiktok_semantic.io import (
+    load_raw_pickles,
+    read_config,
+    resolve_data_root,
+    write_manifest,
+    write_table,
+)  # noqa: E402
+from tiktok_semantic.summaries import (  # noqa: E402
+    enrich_posts_with_summaries,
+    read_video_summaries,
+)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build normalized TikTok climate analytics tables.")
+    parser = argparse.ArgumentParser(
+        description="Build normalized TikTok climate analytics tables."
+    )
     parser.add_argument("--config", default="configs/sample.yaml")
     args = parser.parse_args()
 
@@ -37,7 +50,8 @@ def main() -> None:
     tables = build_core_tables(raw)
 
     videos_dir = raw_root / "Videos"
-    summaries = read_video_summaries(videos_dir, cfg.get("summary", {}).get("summary_filename", "summary.txt"))
+    summary_filename = cfg.get("summary", {}).get("summary_filename", "summary.txt")
+    summaries = read_video_summaries(videos_dir, summary_filename)
     if not summaries.empty:
         tables["posts_summaries"] = summaries
         tables["posts_enriched"] = enrich_posts_with_summaries(tables["post_metrics"], summaries)
@@ -46,7 +60,15 @@ def main() -> None:
     for name, df in sorted(tables.items()):
         path = core_dir / f"{name}.parquet"
         write_table(df, path)
-        manifest_rows.append({"table": name, "category": "core", "rows": len(df), "cols": len(df.columns), "path": str(path)})
+        manifest_rows.append(
+            {
+                "table": name,
+                "category": "core",
+                "rows": len(df),
+                "cols": len(df.columns),
+                "path": str(path),
+            }
+        )
 
     min_views = cfg.get("engagement", {}).get("min_views_for_efficiency_rank", 1000)
     insight_tables = {}
@@ -81,7 +103,15 @@ def main() -> None:
     for name, df in sorted(insight_tables.items()):
         path = analytics_dir / f"{name}.csv"
         write_table(df, path)
-        manifest_rows.append({"table": name, "category": "analytics", "rows": len(df), "cols": len(df.columns), "path": str(path)})
+        manifest_rows.append(
+            {
+                "table": name,
+                "category": "analytics",
+                "rows": len(df),
+                "cols": len(df.columns),
+                "path": str(path),
+            }
+        )
 
     manifest = write_manifest(manifest_rows, processed / "manifest.csv")
     print(f"Built {len(manifest)} tables from {raw_root}")

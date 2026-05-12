@@ -1,3 +1,5 @@
+"""Build dependency-light semantic clustering and comment sentiment tables."""
+
 from __future__ import annotations
 
 import argparse
@@ -15,7 +17,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from tiktok_semantic.io import read_config, write_table
+from tiktok_semantic.io import read_config, write_table  # noqa: E402, I001
 
 
 POSITIVE_WORDS = {
@@ -97,7 +99,10 @@ def auto_cluster_count(n_docs: int) -> int:
     return min(8, max(2, round(math.sqrt(n_docs))))
 
 
-def semantic_clusters(summaries: pd.DataFrame, post_metrics: pd.DataFrame) -> dict[str, pd.DataFrame]:
+def semantic_clusters(
+    summaries: pd.DataFrame,
+    post_metrics: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
     if summaries.empty:
         return {
             "semantic_clusters": pd.DataFrame(),
@@ -210,7 +215,10 @@ def emotion_label(text: str) -> str:
     return "neutral"
 
 
-def comment_sentiment_tables(comments: pd.DataFrame, post_metrics: pd.DataFrame) -> dict[str, pd.DataFrame]:
+def comment_sentiment_tables(
+    comments: pd.DataFrame,
+    post_metrics: pd.DataFrame,
+) -> dict[str, pd.DataFrame]:
     if comments.empty or "text" not in comments.columns:
         return {
             "comment_sentiment_emotion": pd.DataFrame(),
@@ -258,7 +266,10 @@ def comment_sentiment_tables(comments: pd.DataFrame, post_metrics: pd.DataFrame)
     keep = [col for col in keep if col in post_metrics.columns]
     if keep:
         post_summary = post_summary.merge(post_metrics[keep], on="video_id", how="left")
-    post_summary = post_summary.sort_values(["comments_scored", "avg_sentiment_score"], ascending=False)
+    post_summary = post_summary.sort_values(
+        ["comments_scored", "avg_sentiment_score"],
+        ascending=False,
+    )
     keep_comments = [
         "video_id",
         "comment_id",
@@ -278,7 +289,9 @@ def comment_sentiment_tables(comments: pd.DataFrame, post_metrics: pd.DataFrame)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build semantic clustering and comment sentiment tables.")
+    parser = argparse.ArgumentParser(
+        description="Build semantic clustering and comment sentiment tables."
+    )
     parser.add_argument("--config", default="configs/sample.yaml")
     args = parser.parse_args()
 
