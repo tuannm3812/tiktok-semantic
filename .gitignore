@@ -3,11 +3,9 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
-data/raw/**
 data/processed/**
 reports/**
 
-!data/raw/.gitkeep
 !data/processed/.gitkeep
 !reports/.gitkeep
 
@@ -16,3 +14,4 @@ reports/**
 *.egg-info/
 .env
 .DS_Store
+desktop.ini
