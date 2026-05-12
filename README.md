@@ -8,7 +8,7 @@
 [![Data](https://img.shields.io/badge/data-local%20raw%20files-lightgrey)](.gitignore)
 
 <p align="center">
-  <img src="https://p16-tiktokcdn-com.akamaized.net/obj/tiktok-obj/d6415accb8f0986a125f880088f4964f.png" alt="TikTok icon" width="96">
+  <img src="https://p16-va-tiktok.ibyteimg.com/obj/musically-maliva-obj/3736e47fd36b7b1015749101ecab1891.jpeg" alt="TikTok climate analytics visual" width="160">
 </p>
 
 Semantic marketing analytics for climate-action TikTok content.
