@@ -4,20 +4,22 @@
 
 Climate-action TikToks appear most effective when they translate urgency into a concrete action frame. In the current sample, the strongest creative combinations are not generic climate-crisis warnings alone; they pair an emotionally clear hook with a practical path such as personal eco-lifestyle changes, public transit, political accountability, or an easily understood climate analogy.
 
-The recommended marketing strategy is:
+Recommended marketing strategy:
 
 1. Lead with a vivid hook that makes climate feel immediate.
-2. Convert attention into an action frame within the post.
-3. Use comments as a research channel for audience barriers and questions.
-4. Prioritize creators whose historical reach overperforms their follower count.
+2. Convert attention into a clear action frame within the post.
+3. Use comments as a research channel for audience barriers, questions, and objections.
+4. Prioritize creators whose historical reach or network position overperforms their follower count.
 
 ## Evidence Snapshot
 
-The processed local sample contains 10 posts from 2023-01-02 to 2025-05-24, with 5.43M total views, 743K likes, 25.7K shares, and 710 captured comments. Because this is a small sample, the findings should be presented as directional evidence and a repeatable analytical framework rather than final population estimates.
+The processed local sample contains 10 posts from 2023-01-02 to 2025-05-24, with 5.43M total views, 743K likes, 25.7K shares, and 710 captured comments.
+
+Because this is a small sample, the findings should be presented as directional evidence and a repeatable analytical framework rather than final population estimates. The scripts are designed to rerun on the full 1,597-post dataset once it is available locally.
 
 ## 1. Format: Video Carries Reach, Carousel Formats Can Carry Action
 
-Video posts have the strongest median reach in the sample: 889.6K median views across 5 video posts, compared with 1.0K for image-plus-music posts and 391.9K for image-plus-audio posts.
+Video posts have the strongest median reach in the sample: 889.6K median views across 5 video posts, compared with 391.9K for image-plus-audio posts and 1.0K for image-plus-music posts.
 
 However, the top engagement-efficiency post is an image-plus-music eco-lifestyle carousel: 212.3K views and 1,270 engagements per 1K views. That suggests carousel-style posts can work well when the message is step-by-step, saveable, and personally actionable.
 
@@ -25,11 +27,11 @@ Marketing implication: use video for mass awareness and carousel formats for act
 
 ## 2. Message Framing: Urgency Works Best When It Has Direction
 
-The strongest high-reach post uses an urgent, awareness-led environmental message connected to Earth’s beauty: 2.60M views and 11.7K shares. The strongest efficiency post uses a hopeful, empowering individual-action frame: 1,270 engagements per 1K views.
+The strongest high-reach post uses an urgent, awareness-led environmental message connected to Earth's beauty: 2.60M views and 11.7K shares. The strongest efficiency post uses a hopeful, empowering individual-action frame: 1,270 engagements per 1K views.
 
 The pattern is useful: urgency attracts attention, but action framing gives people something to do with that attention. Pure crisis framing without a strong creative bridge performs weakly in the sample, especially in low-reach 2025 posts.
 
-Marketing implication: avoid “climate crisis” as a standalone message. Pair it with one of four action routes: individual habit, collective behavior, policy pressure, or practical learning.
+Marketing implication: avoid "climate crisis" as a standalone message. Pair it with one of four action routes: individual habit, collective behavior, policy pressure, or practical learning.
 
 ## 3. Audience Response: Comments Reveal Conversion Barriers
 
@@ -42,7 +44,7 @@ Captured comments are not just applause. The comment intent table surfaces pract
 
 Examples include viewers asking whether gardens help, whether eating less meat is enough, or saying action is hard because they are young, at school, or dependent on parents.
 
-Marketing implication: climate creators should treat comment sections as message testing. The next post should answer the most common barrier: “What can someone like me realistically do?”
+Marketing implication: climate creators should treat comment sections as message testing. The next post should answer the most common barrier: "What can someone like me realistically do?"
 
 ## 4. Creator Strategy: Smaller Creators Can Overperform
 
@@ -50,7 +52,13 @@ Creator history suggests follower count alone is not a sufficient planning metri
 
 Marketing implication: prioritize creators by historical views per follower, not just follower count. A climate campaign should identify high-efficiency creators who consistently overperform their audience size.
 
-## 5. Hashtags: Broad Climate Tags Need Context Tags
+## 5. Creator Networks: Bridge Position Matters
+
+The creator bridge table uses captured follower and following relationships to estimate network degree, betweenness, component size, and a blended bridge score. In the sample, high bridge scores are not identical to high follower counts. This creates a more useful campaign activation lens: who can carry climate messages across adjacent communities?
+
+Marketing implication: use bridge creators to move climate content from climate-native audiences into lifestyle, politics, transport, and entertainment audiences.
+
+## 6. Hashtags: Broad Climate Tags Need Context Tags
 
 `#climatechange` appears in 9 of 10 posts and drives most aggregate volume, but it is too broad to explain performance by itself. The stronger analytical signal comes from pairing broad tags with contextual tags:
 
@@ -66,7 +74,7 @@ Marketing implication: use broad climate tags for discoverability, but attach a 
 2. Semantic clustering: completed as a dependency-light TF-IDF/KMeans version in `scripts/deep_dive_nlp.py`. On the current sample it finds two narrative clusters:
    - Video-led Earth/politics/interview cluster: 5 posts, 4.43M total views, 889.6K median views.
    - Image/audio climate explainer cluster: 5 posts, 998K total views, 1.0K median views.
-3. Comment sentiment and emotion: completed as a transparent lexicon/rule-based version in `scripts/deep_dive_nlp.py`. Current comment outputs show that general neutral reaction dominates, but confusion and practical questions are the largest actionable second layer.
+3. Comment sentiment and emotion: completed as a transparent lexicon/rule-based version in `scripts/deep_dive_nlp.py`. Current comment outputs show that general neutral reaction dominates, while confusion and practical questions are the largest actionable second layer.
 4. Creator network features: completed for the available sample through `creator_bridge_metrics.csv`, which uses captured follower/following edges to estimate degree, betweenness, component size, and a blended bridge score.
 5. Creative playbook: partly complete through `messaging_recommendations.csv` and this insight brief. The next version should turn top patterns into slide-ready campaign templates.
 

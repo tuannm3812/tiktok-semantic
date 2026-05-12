@@ -1,7 +1,7 @@
 [project]
 name = "tiktok-semantic"
 version = "0.1.0"
-description = "Marketing analytics pipeline for TikTok climate action hackathon data."
+description = "Semantic marketing analytics pipeline for climate-action TikTok content."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

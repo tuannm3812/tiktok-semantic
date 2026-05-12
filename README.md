@@ -11,26 +11,50 @@
   <img src="https://p16-tiktokcdn-com.akamaized.net/obj/tiktok-obj/d6415accb8f0986a125f880088f4964f.png" alt="TikTok icon" width="96">
 </p>
 
-Semantic marketing analytics for climate-action TikToks.
+Semantic marketing analytics for climate-action TikTok content.
 
-This repo turns the UNSW Marketing Analytics Hackathon TikTok dataset into reusable analysis tables and insight briefs for answering:
+This repository supports the UNSW Marketing Analytics Hackathon 2025 challenge:
 
 > How can marketing analytics help uncover insights to more effectively promote climate actions on TikTok?
 
-The starter pipeline is based on the supplied notebook and keeps the useful pieces: pickle loading, nested TikTok object normalization, post/author/comment/hashtag metrics, multimodal summary extraction, and first-pass insight tables.
+The project converts raw TikTok post, creator, comment, hashtag, follower/following, and multimodal summary data into reusable analysis tables, charts, and an evidence-backed competition narrative.
 
-Current analysis is sample-first: the checked workflow runs on the available 10-post `Data_Sample`, and the same scripts are designed to rerun when the full 1,597-post dataset is available locally.
+## Current Scope
 
-## Repo Layout
+The checked workflow is **sample-first**. It currently runs on the available 10-post `Data_Sample`, while keeping the pipeline ready to rerun when the full 1,597-post dataset is available locally.
 
-- `configs/sample.yaml` points to the supplied `Data_Sample.zip` on Google Drive.
-- `scripts/prepare_data.py` extracts the raw zip into `data/raw/Data_Sample/`.
-- `scripts/build_dataset.py` builds parquet core tables and CSV insight tables.
-- `scripts/deep_dive_nlp.py` builds dependency-light semantic clusters and comment sentiment/emotion tables.
-- `src/tiktok_semantic/` contains reusable loaders, normalizers, feature builders, summary parsers, and insight helpers.
-- `notebooks/01_competition_analysis.ipynb` is the refined competition notebook for insight generation.
-- `docs/competition_insights.md` summarizes the current evidence and recommended competition storyline.
-- `data/` and `reports/` are git-ignored so large media, pickles, and outputs stay local.
+Because the current dataset is small, results should be framed as directional evidence and a reusable analytical framework rather than final population-level claims.
+
+## What This Project Does
+
+- Normalizes nested TikTok pickle objects into tidy post, author, comment, hashtag, image, music, and network tables.
+- Extracts semantic features from Gemini-generated `summary.txt` files for each post.
+- Builds post-level performance metrics such as reach, shares, comments, and engagement per 1K views.
+- Creates sample-first deep dives for message framing, content format, audience response, creator leverage, and creator bridge potential.
+- Produces an executed notebook with charts and a concise insight brief for presentation development.
+
+## Repository Structure
+
+```text
+configs/
+  sample.yaml                  # Local paths and pipeline settings
+docs/
+  competition_insights.md      # Competition-ready insight narrative
+notebooks/
+  01_competition_analysis.ipynb
+scripts/
+  prepare_data.py              # Extract raw data zip
+  build_dataset.py             # Build normalized and analytical tables
+  deep_dive_nlp.py             # Build semantic clusters and comment sentiment/emotion tables
+src/tiktok_semantic/
+  features.py                  # Core feature builders
+  insights.py                  # Analytical rollups and campaign tables
+  io.py                        # Config, pickle, parquet, and CSV helpers
+  normalize.py                 # Reusable normalization utilities
+  summaries.py                 # Multimodal summary parsing and labels
+```
+
+`data/` and `reports/` are intentionally git-ignored so raw media, pickle files, and generated outputs stay local.
 
 ## Quick Start
 
@@ -38,51 +62,93 @@ Current analysis is sample-first: the checked workflow runs on the available 10-
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e .
+```
+
+If the supplied raw zip has not been extracted:
+
+```powershell
 python scripts/prepare_data.py --config configs/sample.yaml
+```
+
+Build the analysis tables:
+
+```powershell
 python scripts/build_dataset.py --config configs/sample.yaml
 python scripts/deep_dive_nlp.py --config configs/sample.yaml
 ```
 
-If the pickle files and `Videos/` folders already exist in `data/raw/`, you can skip `prepare_data.py`.
+Then open:
 
-Outputs:
+```text
+notebooks/01_competition_analysis.ipynb
+docs/competition_insights.md
+```
+
+## Outputs
+
+The build scripts write local outputs to:
 
 - `data/processed/core/*.parquet`
 - `data/processed/analytics/*.csv`
 - `data/processed/manifest.csv`
 
-## Suggested Analysis Tracks
+Key analytical outputs include:
 
-1. **Content that travels**: compare reach and `eng_per_1k_views` by content type, duration, hashtags, and multimodal summary themes.
-2. **Action messaging**: identify whether posts frame climate as personal action, systemic action, crisis impacts, nature appreciation, or accountability.
-3. **Creator leverage**: combine author metrics with post outcomes to find creators whose audience size underpredicts engagement.
-4. **Audience response**: roll up comment volume, timing, likes, sentiment, and recurring objections/supportive language.
-5. **Network opportunity**: use follower/following samples to map creator overlap, bridge accounts, and regional clusters.
+| Output | Purpose |
+| --- | --- |
+| `posts_enriched.parquet` | Post metrics joined to content type, theme, mood, and action-frame labels |
+| `theme_performance.csv` | Performance by theme, action frame, and mood |
+| `messaging_recommendations.csv` | Ranked message/content combinations using reach, engagement efficiency, and shares |
+| `comment_intent_summary.csv` | Lightweight audience response categories from captured comments |
+| `post_comment_intents.csv` | Post-level comment response metrics and early-comment counts |
+| `semantic_clusters.csv` | Organic narrative clusters from multimodal summary text |
+| `semantic_cluster_performance.csv` | Cluster-level reach, engagement, share, and comment performance |
+| `comment_sentiment_summary.csv` | Comment sentiment and emotion rollups |
+| `post_comment_sentiment.csv` | Post-level sentiment and emotion indicators |
+| `creator_leverage.csv` | Creator history and reach-over-follower indicators |
+| `creator_bridge_metrics.csv` | Follower/following graph metrics for bridge-creator discovery |
+| `region_performance.csv` | Descriptive regional performance summary |
 
-## Competition-Ready Tables
+## Current Sample Findings
 
-The build script creates a lightweight semantic layer from Gemini's multimodal `summary.txt` files:
+The sample supports a campaign framing that is useful to test on the full dataset:
 
-- `posts_summaries.parquet`: content type, parsed narrative/mood fields, theme labels, action frame, and local media flags.
-- `posts_enriched.parquet`: post metrics joined to the semantic labels.
-- `theme_performance.csv`: performance by theme, action frame, and mood.
-- `messaging_recommendations.csv`: ranked message/content combinations using reach, engagement efficiency, and shares.
-- `comment_intent_summary.csv`: lightweight audience response categories from captured comments.
-- `post_comment_intents.csv`: post-level comment response metrics, including early-comment counts.
-- `creator_leverage.csv`: creator history and reach-over-follower indicators for activation planning.
-- `region_performance.csv`: descriptive regional performance summary.
-- `semantic_clusters.csv` and `semantic_cluster_performance.csv`: organic narrative clusters from multimodal summary text.
-- `comment_sentiment_emotion.csv`, `comment_sentiment_summary.csv`, and `post_comment_sentiment.csv`: audience sentiment and emotion readouts from captured comments.
-- `creator_bridge_metrics.csv`: follower/following graph metrics for identifying bridge creators.
+> Reach comes from hooks, persuasion comes from frames, and conversion opportunities come from comments.
 
-These tables are designed to support claims about how climate-action TikToks should be framed, not just which posts were popular.
+Directional findings:
 
-## Notes
+- Video-led climate narratives carry the strongest reach in the sample.
+- Practical action framing can outperform awareness-only framing on engagement efficiency.
+- Information questions and confusion in comments are valuable signals for follow-up content.
+- Creator selection should consider bridge potential and historical overperformance, not follower count alone.
+- Broad climate hashtags need contextual tags that clarify the content lane, such as transport, eco-lifestyle, politics, extreme weather, or pop-culture analogy.
 
-The original notebook includes heavier NLP steps such as sentence-transformer embeddings, YAKE keyphrases, zero-shot themes, sentiment, emotion, and toxicity. Those belong in an optional NLP layer because they download large models and take longer to run. The base pipeline prepares the clean tables those models need.
+See [docs/competition_insights.md](docs/competition_insights.md) for the full sample-first insight brief.
 
-Optional transformer NLP is not required for the default sample workflow. Install it only when you want model-based embeddings or sentiment/emotion scoring:
+## Optional NLP Layer
+
+The default workflow avoids large model downloads and uses transparent, dependency-light methods:
+
+- TF-IDF + KMeans for semantic clustering.
+- Lexicon/rule-based sentiment and emotion labels for comments.
+
+For a larger dataset or final presentation robustness, install the optional NLP dependencies:
 
 ```powershell
 python -m pip install -e ".[nlp]"
 ```
+
+Future upgrades can replace the default methods with sentence-transformer embeddings and transformer-based sentiment/emotion classifiers while preserving the same output table structure.
+
+## Data Notes
+
+- Raw data is expected under `data/raw`.
+- Generated files under `data/processed` are local artifacts and are not committed.
+- The repository currently documents sample results only because the full 1,597-post dataset is not available in the local workspace.
+
+## Suggested Next Steps
+
+1. Add the full 1,597-post dataset to `data/raw`.
+2. Rerun `build_dataset.py` and `deep_dive_nlp.py`.
+3. Re-execute the notebook to refresh charts and rankings.
+4. Convert the strongest findings into a slide-ready creative playbook: hook, format, frame, creator type, hashtag bundle, and comment follow-up.
