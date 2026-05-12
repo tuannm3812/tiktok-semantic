@@ -1,0 +1,10 @@
+raw_zip: "g:/My Drive/Competition/UNSW Hackathon 2025/Data_Sample.zip"
+raw_dir: "data/raw"
+processed_dir: "data/processed"
+reports_dir: "reports"
+
+engagement:
+  min_views_for_efficiency_rank: 1000
+
+summary:
+  summary_filename: "summary.txt"
